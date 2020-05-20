@@ -1,0 +1,5 @@
+uchar i ;
+do {
+
+
+}while(i<5);

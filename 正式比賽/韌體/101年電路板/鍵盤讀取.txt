@@ -1,0 +1,6 @@
+Private Declare Function GetKeyState Lib "user32" (ByVal key As Long) As Integer
+
+Private Sub Timer1_Timer()
+If GetKeyState(vbKeyA) < 0 Then Form1.Caption = "a"
+If GetKeyState(vbKeyB) < 0 Then Form1.Caption = "B"
+End Sub
