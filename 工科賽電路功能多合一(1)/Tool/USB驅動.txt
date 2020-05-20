@@ -1,0 +1,1 @@
+工科賽電路功能多合一\Tool\usbasp.2011-05-28\bin\win-driver\libusb_1.2.4.0

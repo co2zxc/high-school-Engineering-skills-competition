@@ -1,0 +1,46 @@
+OpenUsbDevice(VendorID, ProductID)  開啟USB
+
+
+OutDataEightByte 第一碼  選擇功能    後面七碼為七組資料   0是沒用到
+
+
+矩陣
+OutDataEightByte &H20,由左算起0 1 2 3 顆 矩陣LED , 每顆LED 由左算起第 0 1 2 3 4 5 6 7  排LED , 資料     最上面為最小值, 0, 0, 0, 0
+
+
+8bit LED
+OutDataEightByte &H21, 8bit LED 資料  最右邊為最小值 , 0, 0, 0, 0, 0, 0
+
+
+
+跑馬燈左移
+OutDataEightByte &H22,最左邊那排資料, 0, 0, 0, 0, 0, 0
+
+
+
+跑馬燈右移
+OutDataEightByte &H23, 最右邊那排資料, 0, 0, 0, 0, 0, 0
+
+沒用到
+&H24  
+
+
+跑馬燈上移
+OutDataEightByte &H25, 0, 0, 0, 0, 0, 0, 0
+
+
+跑馬燈下移
+OutDataEightByte &H26, 0, 0, 0, 0, 0, 0, 0
+
+
+
+送出方波  式波器顯示
+OutDataEightByte &H27, 送出的資料   0 1  低或高 , 0, 0, 0, 0, 0, 0
+
+
+讀取電路 接腳狀態  
+ReadData 存放收到資料的 8bit 1維陣列      '由陣列的欄位1開始存放
+
+
+
+CloseUsbDevice   關閉USB
