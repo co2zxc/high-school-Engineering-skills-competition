@@ -1,0 +1,88 @@
+
+/* ------------------------------------------------------------------------- */
+/* ------------------------------ USB 介面 --------------------------------- */
+/* ------------------------------------------------------------------------- */
+
+PROGMEM const char usbHidReportDescriptor[22] = {   //USB 報告描述元 
+    0x06, 0x00, 0xff,              // USAGE_PAGE (販售商自定)
+    0x09, 0x01,                    // USAGE (Vendor Usage 1)
+    0xa1, 0x01,                    // COLLECTION (Application)
+    0x15, 0x00,                    // LOGICAL_MINIMUM (0)
+    0x26, 0xff, 0x00,              // LOGICAL_MAXIMUM (255)
+    0x75, 0x08,                    // REPORT_SIZE (8)
+    0x95, 0x08,                    // REPORT_COUNT (8)
+    0x09, 0x00,                    // USAGE (Undefined)
+    0xb2, 0x02, 0x01,              // FEATURE (Data,Var,Abs,Buf)
+    0xc0                           // END_COLLECTION
+};
+
+/* 以下的變數是用來暫存目前資料傳輸的狀態 */
+static uchar    currentAddress;
+static uchar    bytesRemaining;
+/*
+/* usbFunctionRead():當主機要從USB裝置要求大批資料時就會呼叫usbFunctionRead() */ 
+
+uchar usbFunctionRead(uchar *data, uchar len)
+{
+    if(len > bytesRemaining)
+		len = bytesRemaining;
+	if(currentAddress == 0){
+	}
+    currentAddress += len;
+    bytesRemaining -= len;
+    return len;
+}
+
+/* usbFunctionWrite():當主機要送出大批資料給USB裝置時就會呼叫usbFunctionWrite()*/
+/* 可參考usbdrv/usbdrv.h文件
+uchar usbFunctionWrite(uchar *data, uchar len)
+{
+    if(bytesRemaining == 0)
+        return 1;               		/* USB傳輸結束 
+    if(len > bytesRemaining)
+        len = bytesRemaining;
+	if(currentAddress == 0){
+		outputByte(*(data));			/* 輸出推動LED的資料位元組  
+		if(*(data+1) == 0x21)		// 啟動紅色LED
+		{
+			
+			PORTC = (PORTC & ~0x20) | 0x20;
+			outputControl(0x10);	//74LS273 時脈 0到1 正緣觸發 產生一個時脈
+			outputControl(0x0);		
+		}
+		else if(*(data+1) == 0x22)	
+		{
+				// 啟動綠色LED
+			PORTC = (PORTC & ~0x20) | 0x00;
+		}
+	} 
+	else{
+		outputControl(0x0);
+	}
+	
+    currentAddress += len;
+    bytesRemaining -= len;
+    return bytesRemaining == 0; 		/* 如果這是最後一批資料，就回傳1 
+}
+
+/* USB HID群組要求: GET_REPORT與SET_REPORT */
+usbMsgLen_t usbFunctionSetup(uchar data[8])
+{
+	usbRequest_t    *rq = (void *)data;
+    if((rq->bmRequestType & USBRQ_TYPE_MASK) == USBRQ_TYPE_CLASS){    /* HID class request 
+        if(rq->bRequest == USBRQ_HID_GET_REPORT){  /* wValue: ReportType (highbyte), ReportID (lowbyte) 
+            /* 由於僅有一個報告類型，因此忽略報告ID */
+            bytesRemaining = 8;
+            currentAddress = 0;
+            return USB_NO_MSG;  /* 使用usbFunctionRead()來傳送資料到PC主機*/
+        }else if(rq->bRequest == USBRQ_HID_SET_REPORT){
+            /* 由於僅有一個報告類型，因此忽略報告ID */
+            bytesRemaining = 8;
+            currentAddress = 0;
+            return USB_NO_MSG;  /* 使用 usbFunctionWrite()從PC主機接收資料*/
+        }else{
+			/* 在此沒有使用販售商要求，因此忽略 */
+		}
+    }
+    return 0;
+}

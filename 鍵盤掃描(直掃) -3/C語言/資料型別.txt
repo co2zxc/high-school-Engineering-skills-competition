@@ -1,0 +1,15 @@
+
+	才腹じ	じ	ボよ猭	计絛瞅
+俱计	Τ		16┪32		int		-2147483648 ~ 2147483647
+			8		char		-128 ~ 127
+			16		short		-32768 ~ 32767
+			32		long		-2147483648 ~ 2147483647
+			64		long long	 
+	礚		16┪32		unsigned int	0 ~ 4294967295
+			8		unsigned char	0 ~ 256
+			16		unsigned short	0 ~ 65535
+			32		unsigned long	0 ~ 4294967295
+			64		unsigned long long	 
+疊翴计	Τ		32		float		0^-38~10^38
+			64		double		10^-308~10^308
+じ	Τ		8		char		-128 ~ 127
