@@ -1,0 +1,3 @@
+sendkeys "A"  讓鍵盤按下 "A"
+
+sendkeys "{Tab}"  讓鍵盤按下Tab
